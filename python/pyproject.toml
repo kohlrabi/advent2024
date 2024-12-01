@@ -3,14 +3,8 @@ name = "advent-of-code-2024"
 version = "0.1.0"
 description = "Advent of Code 2024 Python solutions"
 readme = "README.md"
-requires-python = ">=3.13"
-dependencies = [
-    "requests>=2.32.3",
-]
+requires-python = ">=3.11"
+dependencies = ["requests>=2.32.3"]
 
 [project.optional-dependencies]
-dev = [
-    "mypy>=1.13.0",
-    "ruff>=0.8.1",
-    "types-requests>=2.32.0.20241016",
-]
+dev = ["mypy>=1.13.0", "ruff>=0.8.1", "types-requests>=2.32.0.20241016"]
