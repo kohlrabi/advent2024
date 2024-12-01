@@ -12,7 +12,7 @@ import itertools
 import os
 import pathlib
 import tempfile
-from collections.abc import Iterator
+from collections.abc import Callable, Iterator
 
 import requests
 
@@ -29,7 +29,7 @@ elif __COOKIEPATH.exists():
     __session_cookie = __COOKIEPATH.read_text().strip()
 
 
-def __cache_input_temp(func):
+def __cache_input_temp(func) -> Callable[[int, int], str]:
     @functools.wraps(func)
     def wrapper(year: int, day: int) -> str:
         tempdir = tempfile.gettempdir()
