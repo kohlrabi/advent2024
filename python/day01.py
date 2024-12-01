@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
 from collections import Counter
-from fileinput import input
-from itertools import tee
+
+from puzzle_input_getter import get_puzzle_input_tee
 
 
 def part1(input):
@@ -19,6 +19,6 @@ def part2(input):
 
 
 if __name__ == "__main__":
-    p1, p2 = tee(input())
+    p1, p2 = get_puzzle_input_tee(year=2024, day=1)
     print(f"part1: {part1(p1)}")
     print(f"part2: {part2(p2)}")
