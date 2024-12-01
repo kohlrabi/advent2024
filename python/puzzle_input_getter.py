@@ -47,7 +47,7 @@ def __cache_input_temp(func) -> Callable[[int, int], str]:
 
 
 @__cache_input_temp
-def __get_puzzle_input(year=int, day=int) -> str:
+def __get_puzzle_input(year: int, day: int) -> str:
     if __session_cookie is None:
         raise ValueError(
             "Please set session cookie to download your input.\nEither set ADVENT_OF_CODE_SESSION_COOKIE environment variable,\nor create a file $HOME/.config/advent-of-code/session-cookie with your session cookie"
@@ -64,8 +64,8 @@ def __get_puzzle_input(year=int, day=int) -> str:
 
 
 def get_puzzle_input(year: int, day: int) -> list[str]:
-    return __get_puzzle_input(year=year, day=day).splitlines()
+    return __get_puzzle_input(year, day).splitlines()
 
 
 def get_puzzle_input_tee(year: int, day: int) -> tuple[Iterator[str], ...]:
-    return itertools.tee(get_puzzle_input(year=year, day=day), 2)
+    return itertools.tee(get_puzzle_input(year, day), 2)
