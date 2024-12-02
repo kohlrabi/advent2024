@@ -12,21 +12,14 @@ def is_sorted(report: Sequence[int]) -> bool:
     """Returns True if report is sorted in increasing OR decreasing order"""
     if len(report) <= 2:
         return True
-    op = operator.gt if report[0] < report[1] else operator.lt
+    op = operator.lt if report[0] < report[1] else operator.gt
 
-    for x, y in pairwise(report):
-        if op(x, y):
-            return False
-    return True
+    return all(op(x, y) for x, y in pairwise(report))
 
 
 def is_safe(report: Sequence[int]) -> bool:
     if is_sorted(report):
-        for x, y in pairwise(report):
-            if not (1 <= abs(x - y) <= 3):
-                break
-        else:
-            return True
+        return all(1 <= abs(x - y) <= 3 for x, y in pairwise(report))
     return False
 
 
