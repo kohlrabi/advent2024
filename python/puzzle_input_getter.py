@@ -65,7 +65,3 @@ def __get_puzzle_input(year: int, day: int) -> str:
 
 def get_puzzle_input(year: int, day: int) -> list[str]:
     return __get_puzzle_input(year, day).splitlines()
-
-
-def get_puzzle_input_tee(year: int, day: int) -> tuple[Iterator[str], ...]:
-    return itertools.tee(get_puzzle_input(year, day), 2)
