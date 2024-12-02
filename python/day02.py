@@ -13,7 +13,6 @@ def is_sorted(report: Sequence[int]) -> bool:
     if len(report) <= 2:
         return True
     op = operator.lt if report[0] < report[1] else operator.gt
-
     return all(op(x, y) for x, y in pairwise(report))
 
 
