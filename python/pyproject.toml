@@ -7,4 +7,12 @@ requires-python = ">=3.11"
 dependencies = ["requests>=2.32.3"]
 
 [project.optional-dependencies]
-dev = ["mypy>=1.13.0", "ruff>=0.8.1", "types-requests>=2.32.0.20241016"]
+dev = [
+    "mypy>=1.13.0",
+    "pre-commit>=4.0.1",
+    "ruff>=0.8.1",
+    "types-requests>=2.32.0.20241016",
+]
+
+[tool.ruff]
+line-length = 120

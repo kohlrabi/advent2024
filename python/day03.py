@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-import itertools
 import operator
 import re
 
@@ -21,9 +20,7 @@ def part2(input: str) -> int:
     enabled: bool = True
 
     total: int = 0
-    combined_regex = re.compile(
-        "|".join(f"({regex.pattern})" for regex in (re_mul, re_do, re_dont))
-    )
+    combined_regex = re.compile("|".join(f"({regex.pattern})" for regex in (re_mul, re_do, re_dont)))
     while input:
         if match := re.search(combined_regex, input):
             mul, p1, p2, do, dont = match.groups()

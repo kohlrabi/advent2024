@@ -29,10 +29,7 @@ def part1(reports: Sequence[Sequence[int]]) -> int:
 
 def part2(reports: Sequence[Sequence[int]]) -> int:
     total = sum(
-        any(
-            is_safe(combination)
-            for combination in itertools.combinations(report, len(report) - 1)
-        )
+        any(is_safe(combination) for combination in itertools.combinations(report, len(report) - 1))
         for report in reports
     )
     return total

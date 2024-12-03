@@ -36,13 +36,7 @@ def __cache_input(func) -> Callable[[int, int], str]:
 
     @functools.wraps(func)
     def wrapper(year: int, day: int) -> str:
-        path = (
-            pathlib.Path(__file__).parent
-            / ".cache"
-            / "advent-of-code"
-            / f"{year}"
-            / f"day{day:02}.input"
-        )
+        path = pathlib.Path(__file__).parent / ".cache" / "advent-of-code" / f"{year}" / f"day{day:02}.input"
 
         if path.exists():
             result = path.read_text()

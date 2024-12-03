@@ -1,0 +1,26 @@
+repos:
+- repo: local
+  hooks:
+  - id: ruff-format
+    name: ruff formater
+    description: This checks python formatting with ruff
+    language: python
+    types: [python]
+    entry: ruff format
+    args: ["--check"]
+  
+  - id: ruff-lint
+    name: ruff linter
+    description: This checks python files with ruff
+    language: python
+    types: [python]
+    entry: ruff check
+    args: ["--extend-select", "I"]
+  
+  - id: mypy
+    name: mypy type checker
+    description: This checks python files with mypy
+    language: python
+    types: [python]
+    entry: mypy
+    args: []
