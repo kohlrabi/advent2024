@@ -22,9 +22,13 @@ __ENV_VAR = "ADVENT_OF_CODE_SESSION_COOKIE"
 
 __COOKIEPATH = pathlib.Path.home() / ".config" / "advent-of-code/session-cookie"
 
+__LOCALCOOKIE = pathlib.Path(__file__).parent / ".session-cookie"
+
 
 if __ENV_VAR in os.environ:
     __session_cookie = os.environ[__ENV_VAR].strip()
+elif __LOCALCOOKIE.exists():
+    __session_cookie = __LOCALCOOKIE.read_text().strip()
 elif __COOKIEPATH.exists():
     __session_cookie = __COOKIEPATH.read_text().strip()
 
