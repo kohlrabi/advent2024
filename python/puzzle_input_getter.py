@@ -29,11 +29,17 @@ elif __COOKIEPATH.exists():
     __session_cookie = __COOKIEPATH.read_text().strip()
 
 
-def __cache_input_temp(func) -> Callable[[int, int], str]:
+def __cache_input(func) -> Callable[[int, int], str]:
+    """Decorator that caches to the directory of the current script into .cache folder"""
+
     @functools.wraps(func)
     def wrapper(year: int, day: int) -> str:
-        tempdir = tempfile.gettempdir()
-        path = pathlib.Path(tempdir) / "advent-of-code" / f"{year}_{day}"
+        path = (
+            pathlib.Path(__file__).parent
+            / ".cache"
+            / "advent-of-code"
+            / f"{year}_{day}"
+        )
 
         if path.exists():
             result = path.read_text()
@@ -46,7 +52,7 @@ def __cache_input_temp(func) -> Callable[[int, int], str]:
     return wrapper
 
 
-@__cache_input_temp
+@__cache_input
 def __get_puzzle_input(year: int, day: int) -> str:
     if __session_cookie is None:
         raise ValueError(
@@ -63,5 +69,13 @@ def __get_puzzle_input(year: int, day: int) -> str:
         raise Exception(f"Error getting puzzle input: {response.status_code}")
 
 
-def get_puzzle_input(year: int, day: int) -> list[str]:
-    return __get_puzzle_input(year, day).splitlines()
+def get_puzzle_input(year: int, day: int) -> str:
+    """Gets the puzzle input for year and day using your session cookie.
+
+    Args:
+        year (int): year
+        day (int): day
+    Returns:
+        str: puzzle input
+    """
+    return __get_puzzle_input(year, day)

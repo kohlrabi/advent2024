@@ -18,7 +18,7 @@ def part2(first: Iterable[int], second: Iterable[int]) -> int:
 
 
 def main() -> None:
-    input = get_puzzle_input(year=2024, day=1)
+    input = get_puzzle_input(year=2024, day=1).splitlines()
     first, second = tuple(zip(*((int(n) for n in line.split()) for line in input)))
     print(f"part1: {part1(first, second)}")
     print(f"part2: {part2(first, second)}")

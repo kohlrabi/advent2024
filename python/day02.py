@@ -39,7 +39,7 @@ def part2(reports: Sequence[Sequence[int]]) -> int:
 
 
 def main() -> None:
-    input = get_puzzle_input(year=2024, day=2)
+    input = get_puzzle_input(year=2024, day=2).splitlines()
     reports = [[int(x) for x in line.split()] for line in input]
     print(f"part1: {part1(reports)}")
     print(f"part2: {part2(reports)}")
