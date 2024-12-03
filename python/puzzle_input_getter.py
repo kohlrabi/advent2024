@@ -38,7 +38,8 @@ def __cache_input(func) -> Callable[[int, int], str]:
             pathlib.Path(__file__).parent
             / ".cache"
             / "advent-of-code"
-            / f"{year}_{day}"
+            / f"{year}"
+            / f"day{day:02}.input"
         )
 
         if path.exists():
