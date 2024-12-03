@@ -8,11 +8,9 @@ NEVER SHARE THAT COOKIE, IT IS PERSONALIZED
 """
 
 import functools
-import itertools
 import os
 import pathlib
-import tempfile
-from collections.abc import Callable, Iterator
+from collections.abc import Callable
 
 import requests
 
