@@ -42,7 +42,7 @@ def walk(grid: Grid[str], visited: Grid[str], pos_dir: PosDir) -> PosDir:
     return x, y, direction
 
 
-def part1(grid: Grid[str]) -> int:
+def make_visited(grid: Grid[str]) -> Grid[str]:
     visited = grid.filled(".")
     if pos := grid.find("^"):
         pos_dir = *pos, "^"
@@ -54,6 +54,11 @@ def part1(grid: Grid[str]) -> int:
             pos_dir = walk(grid, visited=visited, pos_dir=pos_dir)
         except IndexError:
             break
+    return visited
+
+
+def part1(grid: Grid[str]) -> int:
+    visited = make_visited(grid)
     return visited.size - visited.count(".")
 
 
