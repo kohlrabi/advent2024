@@ -43,7 +43,7 @@ def walk(grid: Grid[str], visited: Grid[str], pos_dir: PosDir) -> PosDir:
 
 
 def make_visited(grid: Grid[str]) -> Grid[str]:
-    visited = grid.filled(".")
+    visited = grid.filled("")
     if pos := grid.find("^"):
         pos_dir = *pos, "^"
     else:
@@ -59,25 +59,26 @@ def make_visited(grid: Grid[str]) -> Grid[str]:
 
 def part1(grid: Grid[str]) -> int:
     visited = make_visited(grid)
-    return visited.size - visited.count(".")
+    return visited.size - visited.count("")
 
 
 def part2(grid: Grid[str]) -> int:
-    if not (pos := grid.find("^")):
+    if pos := grid.find("^"):
+        pos_dir = *pos, "^"
+    else:
         raise ValueError("No guard found on map")
+    visited = make_visited(grid)
 
     total = 0
-    for x in range(grid.x_size):
-        for y in range(grid.y_size):
-            if (x, y) == pos:
-                continue
-            visited = grid.filled(".")
+    for vpos in visited.finditer_any(*directions.keys()):
+        if pos != vpos:
+            new_visited = grid.filled("")
             new_grid = grid.copy()
-            new_grid[x, y] = "#"
+            new_grid[*vpos] = "#"
             pos_dir = *pos, "^"
             while True:
                 try:
-                    pos_dir = walk(new_grid, visited=visited, pos_dir=pos_dir)
+                    pos_dir = walk(new_grid, visited=new_visited, pos_dir=pos_dir)
                 except IndexError:
                     break
                 except LoopException:

@@ -1,6 +1,6 @@
 from collections.abc import Iterator
 from itertools import product
-from typing import Any
+from typing import Any, no_type_check
 
 
 class Grid[T]:
@@ -23,23 +23,32 @@ class Grid[T]:
 
         return Grid([make_row() for i in range(self.y_size)])
 
-    def finditer(self, value: T) -> Iterator[tuple[int, int]]:
+    def finditer(self, *values: T) -> Iterator[tuple[int, int]]:
         for i, row in enumerate(self.grid):
             for j, col in enumerate(row):
-                if col == value:
+                if col in values:
                     yield (i, j)
 
-    def find(self, value: T) -> tuple[int, int] | None:
+    @no_type_check
+    def finditer_any(self, *values: T) -> Iterator[tuple[int, int]]:
+        for i, row in enumerate(self.grid):
+            for j, col in enumerate(row):
+                for cval in col:
+                    if cval in values:
+                        yield (i, j)
+                    break
+
+    def find(self, *values: T) -> tuple[int, int] | None:
         try:
-            return next(self.finditer(value))
+            return next(self.finditer(*values))
         except StopIteration:
             return None
 
-    def findall(self, value: T) -> tuple[tuple[int, int], ...]:
-        return tuple(self.finditer(value))
+    def findall(self, *values: T) -> tuple[tuple[int, int], ...]:
+        return tuple(self.finditer(*values))
 
-    def count(self, value: T) -> int:
-        return len(self.findall(value))
+    def count(self, *values: T) -> int:
+        return len(self.findall(*values))
 
     def __getitem__(self, key: tuple[int, int]) -> T:
         x, y = key
