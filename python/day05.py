@@ -75,8 +75,8 @@ def part2(rules: Rules, updates: list[list[int]]) -> int:
         for entry in update:
             update_indices.append(order.index(entry))
         if sorted(update_indices) != update_indices:
-            _, sorted_update = zip(*sorted(zip(update_indices, update)))
-            total += sorted_update[len(sorted_update) // 2]
+            update.sort(key=lambda _: update_indices.pop(0))
+            total += update[len(update) // 2]
     return total
 
 
