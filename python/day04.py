@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
-from collections.abc import Iterator
-from itertools import chain, product
+from itertools import product
 from typing import Any
 
 from puzzle_input_getter import get_puzzle_input
@@ -70,7 +69,7 @@ def part1(array: Grid[str]) -> int:
 
 
 def part2(array: Grid[str]) -> int:
-    pattern: Grid[str | None] = Grid([["M", None, "S"], [None, "A", None], ["M", None, "S"]])
+    pattern = Grid([["M", None, "S"], [None, "A", None], ["M", None, "S"]])
 
     patterns = (pattern, pattern.reverse_x(), pattern.transpose(), pattern.reverse_x().transpose())
 
