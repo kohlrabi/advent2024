@@ -3,7 +3,7 @@ name = "advent-of-code-2024"
 version = "0.1.0"
 description = "Advent of Code 2024 Python solutions"
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = ">=3.13"
 dependencies = ["requests>=2.32.3"]
 
 [project.optional-dependencies]
