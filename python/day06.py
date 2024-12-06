@@ -16,9 +16,16 @@ directions = {
 directions_keys = list(directions.keys())
 
 
-def walk(grid: Grid[str], visited: Grid[int], pos_dir: PosDir) -> PosDir | None:
+class LoopException(Exception):
+    pass
+
+
+def walk(grid: Grid[str], visited: Grid[str], pos_dir: PosDir) -> PosDir:
     x, y, direction = pos_dir
-    visited[x, y] = 1
+
+    if direction in visited[x, y]:
+        raise LoopException("Found loop in track")
+    visited[x, y] += direction
 
     dx, dy = directions[direction]
 
@@ -31,33 +38,61 @@ def walk(grid: Grid[str], visited: Grid[int], pos_dir: PosDir) -> PosDir | None:
             x, y = x + dx, y + dy
     except IndexError:
         # left the map
-        return None
+        raise
     return x, y, direction
 
 
 def part1(grid: Grid[str]) -> int:
-    visited = grid.filled(0)
+    visited = grid.filled(".")
     if pos := grid.find("^"):
         pos_dir = *pos, "^"
     else:
         raise ValueError("No guard found on map")
-    while pos_dir := walk(grid, visited=visited, pos_dir=pos_dir):
-        pass
-    return visited.count(1)
+
+    while True:
+        try:
+            pos_dir = walk(grid, visited=visited, pos_dir=pos_dir)
+        except IndexError:
+            break
+    return visited.size - visited.count(".")
 
 
-def part2(array: Grid[str]) -> int:
-    return 0
+def part2(grid: Grid[str]) -> int:
+    if not (pos := grid.find("^")):
+        raise ValueError("No guard found on map")
+
+    total = 0
+    for x in range(grid.x_size):
+        for y in range(grid.y_size):
+            if (x, y) == pos:
+                continue
+            visited = grid.filled(".")
+            new_grid = grid.copy()
+            new_grid[x, y] = "#"
+            pos_dir = *pos, "^"
+            while True:
+                try:
+                    pos_dir = walk(new_grid, visited=visited, pos_dir=pos_dir)
+                except IndexError:
+                    break
+                except LoopException:
+                    total += 1
+                    break
+    return total
 
 
 def main() -> None:
     input = get_puzzle_input(year=2024, day=6)
 
-    array = Grid([[x for x in line] for line in input.splitlines()])
+    # import pathlib
 
-    print(f"part1: {part1(array)}")
+    # input = pathlib.Path("day06.test").read_text()
 
-    print(f"part2: {part2(array)}")
+    grid = Grid([[x for x in line] for line in input.splitlines()])
+
+    print(f"part1: {part1(grid)}")
+
+    print(f"part2: {part2(grid)}")
 
 
 if __name__ == "__main__":
