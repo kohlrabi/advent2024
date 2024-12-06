@@ -17,18 +17,33 @@ class Rules:
             self.rules[first] = []
         self.rules[second].append(first)
 
-    def order(self) -> list[int]:
+    def simplify_order(self, update: list[int] | None = None) -> list[tuple[int, list[int]]]:
+        if update is None:
+            update = []
+
+        rules = []
+        for x, y in self.rules.items():
+            if x in update:
+                lst = []
+                for yy in y:
+                    if yy in update:
+                        lst.append(yy)
+                rules.append((x, lst))
+
+        return rules
+
+    def order(self, update: list[int] | None = None) -> list[int]:
         # make a copy of the inner lists to modify them
-        rules = [(x, y[:]) for x, y in self.rules.items()]
+        rules = self.simplify_order(update)
 
         ordered: list[int] = []
-        num = len(rules)
 
         rules.sort(key=lambda x: len(x[1]))
-        while len(ordered) < num:
+        while rules:
             value = rules[0][0]
-            ordered.append(value)
             rules.pop(0)
+            ordered.append(value)
+
             for _, lst in rules:
                 try:
                     lst.remove(value)
@@ -42,8 +57,8 @@ class Rules:
 
 def part1(rules: Rules, updates: list[list[int]]) -> int:
     total = 0
-    order = rules.order()
     for update in updates:
+        order = rules.order(update=update)
         update_indices = []
         for entry in update:
             update_indices.append(order.index(entry))
@@ -58,10 +73,6 @@ def part2(rules: Rules, updates: list[list[int]]) -> int:
 
 def main() -> None:
     input = get_puzzle_input(year=2024, day=5)
-
-    # import pathlib
-
-    # input = pathlib.Path("day05.test").read_text()
 
     updates: list[list[int]] = []
 
