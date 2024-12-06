@@ -16,7 +16,7 @@ directions = {
 directions_keys = list(directions.keys())
 
 
-def walk(grid: Grid[str], visited: Grid[int], pos_dir: PosDir) -> PosDir:
+def walk(grid: Grid[str], visited: Grid[int], pos_dir: PosDir) -> PosDir | None:
     x, y, direction = pos_dir
     visited[x, y] = 1
 
@@ -31,7 +31,7 @@ def walk(grid: Grid[str], visited: Grid[int], pos_dir: PosDir) -> PosDir:
             x, y = x + dx, y + dy
     except IndexError:
         # left the map
-        return ()
+        return None
     return x, y, direction
 
 
