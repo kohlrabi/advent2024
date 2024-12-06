@@ -9,6 +9,7 @@ class Grid[T]:
         self.x_size = len(grid)
         self.y_size = len(grid[0])
         self.dims = (self.x_size, self.y_size)
+        self.size = self.x_size * self.y_size
 
     def __eq__(self, other: Any) -> bool:
         if not isinstance(other, Grid):
@@ -72,6 +73,9 @@ class Grid[T]:
             self.match_pattern(pattern, i, j, ignore=ignore)
             for i, j in product(range(self.x_size - pattern.x_size + 1), range(self.y_size - pattern.y_size + 1))
         )
+
+    def copy(self) -> "Grid[T]":
+        return Grid([row[:] for row in self.grid])
 
     def __str__(self) -> str:
         return str(self.grid)
