@@ -19,16 +19,16 @@ class Grid[T]:
         return self.grid[x][y]
 
     def match_pattern(self, pattern: "Grid[T]", x: int, y: int, ignore: Any = None) -> bool:
-        if x + pattern.x_size > self.x_size:
-            raise ValueError("x value out of bounds")
-        if y + pattern.y_size > self.y_size:
-            raise ValueError("y value out of bounds")
-        for i, j in product(range(pattern.x_size), range(pattern.y_size)):
-            if pattern[i, j] == ignore:
-                continue
-            if self[x + i, y + j] != pattern[i, j]:
-                return False
-        return True
+        return all(
+            self[x + i, y + j] == pattern[i, j] or pattern[i, j] == ignore
+            for i, j in product(range(pattern.x_size), range(pattern.y_size))
+        )
+
+    def count_matches(self, pattern: "Grid[T]", ignore: Any = None):
+        return sum(
+            self.match_pattern(pattern, i, j, ignore=ignore)
+            for i, j in product(range(self.x_size - pattern.x_size + 1), range(self.y_size - pattern.y_size + 1))
+        )
 
     def __str__(self) -> str:
         return str(self.grid)
@@ -49,16 +49,21 @@ def part1(array: Grid[str]) -> int:
         )
     )
 
-    total = 0
-    for pattern in patterns:
-        for i, j in product(range(array.x_size - pattern.x_size + 1), range(array.y_size - pattern.y_size + 1)):
-            total += array.match_pattern(pattern, i, j)
-
-    return total
+    return sum(array.count_matches(pattern=pattern) for pattern in patterns)
 
 
-def part2(array: list[list[str]]) -> int:
-    return 0
+def part2(array: Grid[str]) -> int:
+    patterns: Iterator[Grid] = (
+        Grid(pattern)
+        for pattern in (
+            [["M", None, "S"], [None, "A", None], ["M", None, "S"]],
+            [["S", None, "M"], [None, "A", None], ["S", None, "M"]],
+            [["M", None, "M"], [None, "A", None], ["S", None, "S"]],
+            [["S", None, "S"], [None, "A", None], ["M", None, "M"]],
+        )
+    )
+
+    return sum(array.count_matches(pattern=pattern) for pattern in patterns)
 
 
 def main() -> None:
@@ -67,6 +72,7 @@ def main() -> None:
     array = Grid([[x for x in line] for line in input.splitlines()])
 
     print(f"part1: {part1(array)}")
+
     print(f"part2: {part2(array)}")
 
 
