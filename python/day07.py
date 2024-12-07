@@ -19,14 +19,14 @@ class NextOp:
         return op(x, y)
 
 
-def part1(equations) -> int:
+def solve(equations, operators=()):
     total = 0
     for equation in equations:
         result = equation[0]
         operands = equation[1:]
 
-        operators = product((op.add, op.mul), repeat=len(operands) - 1)
-        for opers in operators:
+        operators_p = product(operators, repeat=len(operands) - 1)
+        for opers in operators_p:
             if result == reduce(NextOp(opers), operands):
                 total += result
                 break
@@ -34,8 +34,20 @@ def part1(equations) -> int:
     return total
 
 
+def combine(x, y):
+    return int(str(x) + str(y))
+
+
+def part1(equations) -> int:
+    operators = (op.add, op.mul)
+
+    return solve(equations, operators)
+
+
 def part2(equations) -> int:
-    return 0
+    operators = (op.add, op.mul, combine)
+
+    return solve(equations, operators)
 
 
 def main() -> None:
