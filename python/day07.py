@@ -5,13 +5,14 @@ import re
 from collections.abc import Callable, Iterable
 from functools import reduce
 from itertools import product
-from typing import Any
 
 from puzzle_input_getter import get_puzzle_input
 
 
 class NextOp:
-    def __init__(self, operators: Iterable[Callable[[Any, Any], Any]]):
+    """Class that returns the next operator when called"""
+
+    def __init__(self, operators: Iterable[Callable[[int, int], int]]):
         self.it = iter(operators)
 
     def __call__(self, x, y):
@@ -19,13 +20,14 @@ class NextOp:
         return op(x, y)
 
 
-def solve(equations, operators=()):
+def solve(equations: list[list[int]], operators: Iterable[Callable[[int, int], int]]) -> int:
     total = 0
     for equation in equations:
         result = equation[0]
         operands = equation[1:]
 
         operators_p = product(operators, repeat=len(operands) - 1)
+
         for opers in operators_p:
             if result == reduce(NextOp(opers), operands):
                 total += result
@@ -34,10 +36,11 @@ def solve(equations, operators=()):
     return total
 
 
-def combine(x: int, y: int) -> int:
-    ndigits = len(str(y))
+def combine(lhs: int, rhs: int) -> int:
+    """Append the rhs to the lhs"""
+    ndigits = len(str(rhs))
 
-    return x * 10**ndigits + y
+    return lhs * 10**ndigits + rhs
 
 
 def part1(equations) -> int:
