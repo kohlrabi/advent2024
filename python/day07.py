@@ -34,8 +34,10 @@ def solve(equations, operators=()):
     return total
 
 
-def combine(x, y):
-    return int(str(x) + str(y))
+def combine(x: int, y: int) -> int:
+    ndigits = len(str(y))
+
+    return x * 10**ndigits + y
 
 
 def part1(equations) -> int:
