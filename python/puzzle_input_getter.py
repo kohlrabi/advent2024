@@ -14,8 +14,6 @@ from collections.abc import Callable
 
 import requests
 
-__session_cookie = None
-
 __ENV_VAR = "ADVENT_OF_CODE_SESSION_COOKIE"
 
 __COOKIEPATH = pathlib.Path.home() / ".config" / "advent-of-code/session-cookie"
@@ -23,12 +21,15 @@ __COOKIEPATH = pathlib.Path.home() / ".config" / "advent-of-code/session-cookie"
 __LOCALCOOKIE = pathlib.Path(__file__).parent / ".session-cookie"
 
 
-if __ENV_VAR in os.environ:
-    __session_cookie = os.environ[__ENV_VAR].strip()
-elif __LOCALCOOKIE.exists():
-    __session_cookie = __LOCALCOOKIE.read_text().strip()
-elif __COOKIEPATH.exists():
-    __session_cookie = __COOKIEPATH.read_text().strip()
+def get_session_cookie():
+    if __ENV_VAR in os.environ:
+        return os.environ[__ENV_VAR].strip()
+    elif __LOCALCOOKIE.exists():
+        return __LOCALCOOKIE.read_text().strip()
+    elif __COOKIEPATH.exists():
+        return __COOKIEPATH.read_text().strip()
+
+    return None
 
 
 def __cache_input(func) -> Callable[[int, int], str]:
@@ -51,19 +52,22 @@ def __cache_input(func) -> Callable[[int, int], str]:
 
 @__cache_input
 def __get_puzzle_input(year: int, day: int) -> str:
-    if __session_cookie is None:
+    session_cookie = get_session_cookie()
+
+    if session_cookie is None:
         raise ValueError(
             "Please set session cookie to download your input.\nEither set ADVENT_OF_CODE_SESSION_COOKIE environment variable,\nor create a file $HOME/.config/advent-of-code/session-cookie with your session cookie"
         )
+
     url = f"https://adventofcode.com/{year}/day/{day}/input"
-    headers = {"Cookie": f"session={__session_cookie}"}
+    headers = {"Cookie": f"session={session_cookie}"}
 
     response = requests.get(url, headers=headers)
 
     if response.status_code == 200:
         return response.text
     else:
-        raise Exception(f"Error getting puzzle input: {response.status_code}")
+        raise Exception(f"Error getting puzzle input, HTTP error: {response.status_code}")
 
 
 def get_puzzle_input(year: int, day: int) -> str:
