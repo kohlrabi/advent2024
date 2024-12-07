@@ -21,9 +21,9 @@ def next_op(operators: Iterable[Callable[[int, int], int]]) -> Callable[[int, in
 
 def solve(equations: list[list[int]], operators: Iterable[Callable[[int, int], int]]) -> int:
     total = 0
+
     for equation in equations:
-        result = equation[0]
-        operands = equation[1:]
+        result, *operands = equation
 
         operators_p = product(operators, repeat=len(operands) - 1)
 
