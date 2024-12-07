@@ -9,15 +9,14 @@ from itertools import product
 from puzzle_input_getter import get_puzzle_input
 
 
-class NextOp:
-    """Class that returns the next operator when called"""
+def next_op(operators: Iterable[Callable[[int, int], int]]) -> Callable[[int, int], int]:
+    """Return a function that applies the next operator"""
+    it = iter(operators)
 
-    def __init__(self, operators: Iterable[Callable[[int, int], int]]):
-        self.it = iter(operators)
+    def apply_next_op(lhs: int, rhs: int) -> int:
+        return next(it)(lhs, rhs)
 
-    def __call__(self, x, y):
-        op = next(self.it)
-        return op(x, y)
+    return apply_next_op
 
 
 def solve(equations: list[list[int]], operators: Iterable[Callable[[int, int], int]]) -> int:
@@ -29,7 +28,7 @@ def solve(equations: list[list[int]], operators: Iterable[Callable[[int, int], i
         operators_p = product(operators, repeat=len(operands) - 1)
 
         for opers in operators_p:
-            if result == reduce(NextOp(opers), operands):
+            if result == reduce(next_op(opers), operands):
                 total += result
                 break
 
