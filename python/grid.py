@@ -8,9 +8,6 @@ from typing import Any, no_type_check
 class Vector:
     x: int
     y: int
-    # def __init__(self, x: int = 0, y: int = 0):
-    #     self.x = x
-    #     self.y = y
 
     def add(self, other: "Vector") -> "Vector":
         return Vector(self.x + other.x, self.y + other.y)
