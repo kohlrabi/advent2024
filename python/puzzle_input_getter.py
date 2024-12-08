@@ -51,15 +51,7 @@ def __cache_input(func) -> Callable[[int, int], str]:
 
 
 @__cache_input
-def get_puzzle_input(year: int, day: int) -> str:
-    """Gets the puzzle input for year and day using your session cookie.
-
-    Args:
-        year (int): year
-        day (int): day
-    Returns:
-        str: puzzle input
-    """
+def __get_puzzle_input(year: int, day: int) -> str:
     session_cookie = get_session_cookie()
 
     if session_cookie is None:
@@ -76,3 +68,15 @@ def get_puzzle_input(year: int, day: int) -> str:
         return response.text
     else:
         raise Exception(f"Error getting puzzle input, HTTP error: {response.status_code}")
+
+
+def get_puzzle_input(year: int, day: int) -> str:
+    """Gets the puzzle input for year and day using your session cookie.
+
+    Args:
+        year (int): year
+        day (int): day
+    Returns:
+        str: puzzle input
+    """
+    return __get_puzzle_input(year, day)
