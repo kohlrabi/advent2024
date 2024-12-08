@@ -1,6 +1,40 @@
 from collections.abc import Iterator
+from dataclasses import astuple, dataclass
 from itertools import product
 from typing import Any, no_type_check
+
+
+@dataclass(slots=True, eq=True, match_args=True)
+class Vector:
+    x: int
+    y: int
+    # def __init__(self, x: int = 0, y: int = 0):
+    #     self.x = x
+    #     self.y = y
+
+    def add(self, other: "Vector") -> "Vector":
+        return Vector(self.x + other.x, self.y + other.y)
+
+    def __add__(self, other: "Vector") -> "Vector":
+        return self.add(other)
+
+    def sub(self, other: "Vector") -> "Vector":
+        return Vector(self.x - other.x, self.y - other.y)
+
+    def __sub__(self, other: "Vector") -> "Vector":
+        return self.sub(other)
+
+    def mul(self, other: int) -> "Vector":
+        return Vector(self.x * other, self.y * other)
+
+    def __mul__(self, other: int) -> "Vector":
+        return self.mul(other)
+
+    def __index__(self) -> tuple[int, int]:
+        return astuple(self)
+
+    def __iter__(self) -> Iterator[int]:
+        return iter(astuple(self))
 
 
 class Grid[T]:
@@ -56,13 +90,13 @@ class Grid[T]:
     def count(self, *values: T) -> int:
         return len(self.findall(*values))
 
-    def __getitem__(self, key: tuple[int, int]) -> T:
+    def __getitem__(self, key: tuple[int, int] | Vector) -> T:
         x, y = key
         if x < 0 or y < 0:
             raise IndexError("Out of bounds)")
         return self.grid[x][y]
 
-    def __setitem__(self, key: tuple[int, int], value: T) -> None:
+    def __setitem__(self, key: tuple[int, int] | Vector, value: T) -> None:
         x, y = key
         if x < 0 or y < 0:
             raise IndexError("Out of bounds)")
