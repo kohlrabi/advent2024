@@ -90,10 +90,6 @@ def part2(grid: Grid[str]) -> int:
 def main() -> None:
     input = get_puzzle_input(year=2024, day=6)
 
-    # import pathlib
-
-    # input = pathlib.Path("day06.test").read_text()
-
     grid = Grid([[x for x in line] for line in input.splitlines()])
 
     print(f"part1: {part1(grid)}")
