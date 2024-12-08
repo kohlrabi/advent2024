@@ -17,6 +17,12 @@ class Grid[T]:
         print(self.grid, other.grid)
         return self.grid == other.grid
 
+    def __iter__(self):
+        yield from (col for row in self.grid for col in row)
+
+    def unique(self) -> set[T]:
+        return set(iter(self))
+
     def filled(self, fillvalue: Any) -> "Grid[Any]":
         def make_row():
             return [fillvalue] * self.x_size
