@@ -20,7 +20,7 @@ def part1(grid: Grid[str]) -> int:
     unique = grid.unique()
     unique.remove(".")
 
-    for u in sorted(unique):
+    for u in unique:
         locs = starmap(Vector, grid.findall(u))
         for pair in combinations(locs, 2):
             for antinode in find_antinodes(*pair):
@@ -37,7 +37,7 @@ def part2(grid: Grid[str]) -> int:
     unique = grid.unique()
     unique.remove(".")
 
-    for u in sorted(unique):
+    for u in unique:
         locs = starmap(Vector, grid.findall(u))
         for pair in combinations(locs, 2):
             sub = pair[1] - pair[0]
