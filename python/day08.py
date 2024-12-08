@@ -6,16 +6,6 @@ from itertools import combinations, starmap
 from grid import Grid, Vector
 from puzzle_input_getter import get_puzzle_input
 
-# Vector = tuple[int, int]
-
-
-# def sub_vector(lhs: Vector, rhs: Vector) -> Vector:
-#     return (rhs[0] - lhs[0], rhs[1] - lhs[1])
-
-
-# def scale_vector(lhs: Vector, rhs: int = 1) -> Vector:
-#     return (lhs[0] * rhs, lhs[1] * rhs)
-
 
 def find_antinodes(lhs: Vector, rhs: Vector) -> tuple[Vector, Vector]:
     sub = rhs - lhs
