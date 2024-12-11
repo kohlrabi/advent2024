@@ -120,6 +120,17 @@ class Grid[T]:
             for i, j in product(range(self.x_size - pattern.x_size + 1), range(self.y_size - pattern.y_size + 1))
         )
 
+    def neighbours(self, pos: tuple[int, int] | Vector) -> Iterator[tuple[T, tuple[int, int]]]:
+        x, y = pos
+        if x > 0:
+            yield self[x - 1, y], (x - 1, y)
+        if x < self.x_size - 1:
+            yield self[x + 1, y], (x + 1, y)
+        if y > 0:
+            yield self[x, y - 1], (x, y - 1)
+        if y < self.y_size - 1:
+            yield self[x, y + 1], (x, y + 1)
+
     def copy(self) -> "Grid[T]":
         return Grid([row[:] for row in self.grid])
 
